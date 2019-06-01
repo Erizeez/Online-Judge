@@ -5,9 +5,14 @@ Created on Sat Jun  1 18:40:28 2019
 @author: 张勇成 18231171
 """
 
+#本自定义库为代码核心
+#注意：此处的调用看似错误，实则由于python的根目录调用机制，程序执行
+#位于根目录，故所有自定义库调用基于运行代码，不基于相对于自定义库的
+#相对地址
 from repository import codes_class
 import tkinter
 
+#主体运行函数
 
 def test_codes(codes_data, test_data, time_limit_temp, ram_limit_temp, space_value):
     result = []
