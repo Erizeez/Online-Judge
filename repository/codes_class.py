@@ -17,6 +17,7 @@ import memory_profiler
 
 #注意：此处的操作严格保留初始格式。
 
+
 #该函数将会返回一个二元列表，分别储存标准输入和预计输出（注意先后顺序）。
 #即处理测试数据，将输入输出分离到一个二维列表的两个子列表。
 def data_modify(data):
@@ -30,6 +31,7 @@ def data_modify(data):
 
 #建立CodeTest类，以便于处理测试代码和对应结果。
 
+
 #注意：尽管程序支持多组数据，但此处仅支持处理单独一组，多组处理
 #需要通过外部实现，详见main.py。
 class CodeTest:
@@ -41,15 +43,22 @@ class CodeTest:
         #将单位转化成s。
         self.time_limit = time_limit / 1000
         self.ram_limit = ram_limit
+
     def code_run(self):
         #防止因Exception的直接跳出。
         try:
             #尽管不提倡clock，但出于提高对于单一进程的时间测算精度。
             start_time = time.clock()
             #调用subprocess库的Popen类，标准输入、输出、错误都用PIPE导出。在shell环境下运行且支持换行符。
-            temp = subprocess.Popen('temp.py', stdin = subprocess.PIPE, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = True, universal_newlines = True)
+            temp = subprocess.Popen('temp.py',
+                                    stdin=subprocess.PIPE,
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.PIPE,
+                                    shell=True,
+                                    universal_newlines=True)
             #调用memory_profiler库的memory_usage以计算最大内存使用。将pid赋值给proc, max_usage为True以返回最大内存占用。
-            memory_use_max = memory_profiler.memory_usage(proc = temp.pid, max_usage = True)
+            memory_use_max = memory_profiler.memory_usage(proc=temp.pid,
+                                                          max_usage=True)
             #用communicate传入标准输入，设定最长时间。
             res = temp.communicate(self.input_data, self.time_limit)
             #尽管communicate会自动清理进程，但考虑到python不靠谱的进程管理，小心不为过。
@@ -98,7 +107,3 @@ class CodeTest:
                 return 'AC'
             else:
                 return 'WA'
-
-        
-    
-        
