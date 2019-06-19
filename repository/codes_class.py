@@ -35,7 +35,8 @@ def data_modify(data):
 #注意：尽管程序支持多组数据，但此处仅支持处理单独一组，多组处理
 #需要通过外部实现，详见main.py。
 class CodeTest:
-    #初始化基本属性。输入数据，预计输出数据，是否严格限制空格与换行的bool值，时间限制，内存限制。
+    #初始化基本属性。输入数据，预计输出数据，是否严格限制空格与换行的bool值，时间限制，内存
+    #限制。
     def __init__(self, input_data, check_data, space, time_limit, ram_limit):
         self.input_data = input_data
         self.check_data = check_data
@@ -49,14 +50,16 @@ class CodeTest:
         try:
             #尽管不提倡clock，但出于提高对于单一进程的时间测算精度。
             start_time = time.clock()
-            #调用subprocess库的Popen类，标准输入、输出、错误都用PIPE导出。在shell环境下运行且支持换行符。
+            #调用subprocess库的Popen类，标准输入、输出、错误都用PIPE导出。在shell环境下
+            #运行且支持换行符。
             temp = subprocess.Popen('temp.py',
                                     stdin=subprocess.PIPE,
                                     stdout=subprocess.PIPE,
                                     stderr=subprocess.PIPE,
                                     shell=True,
                                     universal_newlines=True)
-            #调用memory_profiler库的memory_usage以计算最大内存使用。将pid赋值给proc, max_usage为True以返回最大内存占用。
+            #调用memory_profiler库的memory_usage以计算最大内存使用。将pid赋值给proc,
+            #max_usage为True以返回最大内存占用。
             memory_use_max = memory_profiler.memory_usage(proc=temp.pid,
                                                           max_usage=True)
             #用communicate传入标准输入，设定最长时间。
@@ -71,7 +74,8 @@ class CodeTest:
             end_time = time.clock()
             #判断是否为超时错误。
             if 'timed out' in str(err):
-                #返回TLE，尽管此处的TLE在后续中无用，但若改为None则会在某个call语句中报错。
+                #返回TLE，尽管此处的TLE在后续中无用，但若改为None则会在某个call语句中报
+                #错。
                 res = [None, 'TLE']
                 #上行注释所述的判断的对象即为all_time。
                 all_time = 'Out'
@@ -87,7 +91,7 @@ class CodeTest:
         return [res, all_time, memory_use_max]
     #通过上行返回的列表判断运行结果。返回结果字符串。
     def output_judge(self, target):
-        if 'Traceback' in target[0][1] or 'SyntaxError' in target[0][1]:
+        if 'Traceback' in target[0][1] or 'Error' in target[0][1]:
             return 'CE'
         elif target[1] == 'Out':
             return 'TLE'

@@ -1,1 +1,2 @@
-print(input())
+while True:
+    a = 1
